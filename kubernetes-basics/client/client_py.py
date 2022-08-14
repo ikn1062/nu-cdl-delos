@@ -14,10 +14,11 @@ PORT = 5051
 ADDR = (SERVER, PORT)
 MSG_WAIT = (5 + 5)//2
 """
-SERVER = os.getenv('SERVER_ADDRESS')
+SERVER = os.getenv('SERVER_ADD')
 PORT = data['SERVER_PORT']
 ADDR = (SERVER, PORT)
 MSG_WAIT = (int(data['TIME_LOWER']) + int(data['TIME_UPPER'])) / 2
+print(SERVER)
 
 MSG_LENGTH = 64
 FORMAT = 'utf-8'
@@ -66,7 +67,7 @@ def main():
         client_msg = "Hello World!"
         try:
             # send(client, client_msg)
-            if threading.activeCount() < 2:
+            if threading.active_count() < 2:
                 thread_send = threading.Thread(target=send, args=(client, client_msg), daemon=True)
                 thread_server_reply = threading.Thread(target=server_reply, args=(client,), daemon=True)
                 thread_send.start()

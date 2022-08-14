@@ -4,7 +4,7 @@ import time
 import json
 
 file_name = "server.json"
-file_open = open('client.json')
+file_open = open('server.json')
 data = json.load(file_open)
 
 """
@@ -17,7 +17,7 @@ SERVER = '0.0.0.0'
 PORT = data['SERVER_PORT']
 ADDR = (SERVER, PORT)
 MSG_WAIT = (int(data['TIME_LOWER']) + int(data['TIME_UPPER'])) / 2
-
+print(ADDR)
 
 MSG_LENGTH = 64
 FORMAT = "utf-8"

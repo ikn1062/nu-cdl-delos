@@ -35,7 +35,8 @@ spec:
           value: client-server-service
         volumeMounts:
         - name: client-config
-          mountPath: app
+          mountPath: app/client.json
+          subPath: client.json
       volumes:
         - name: client-config
           configMap:

@@ -32,7 +32,8 @@ spec:
             cpu: "250m"
         volumeMounts:
         - name: server-config
-          mountPath: app
+          mountPath: app/server.json
+          subPath: server.json
       volumes:
         - name: server-config
           configMap:
