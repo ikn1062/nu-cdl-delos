@@ -3,11 +3,12 @@ kind: ConfigMap
 metadata:
   name: client-config-file
 data:
-  client.ini: |
-  [client_config]
-  SERVER_PORT = 5050
-  TIME_LOWER = 3
-  TIME_UPPER = 7
+  client.json: |
+    {
+    "SERVER_PORT": 5050,
+    "TIME_LOWER": 3,
+    "TIME_UPPER": 7
+    }
 ---
 apiVersion: apps/v1
 kind: Deployment

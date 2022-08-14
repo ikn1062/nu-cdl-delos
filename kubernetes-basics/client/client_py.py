@@ -1,12 +1,12 @@
 import socket
 import time
 import threading
-from configparser import ConfigParser
+import json
 import os
 
-file_name = "client.ini"
-config = ConfigParser()
-config.read(file_name)
+file_name = "client.json"
+file_open = open('client.json')
+data = json.load(file_open)
 
 """
 SERVER = socket.gethostbyname(socket.gethostname())
@@ -15,10 +15,9 @@ ADDR = (SERVER, PORT)
 MSG_WAIT = (5 + 5)//2
 """
 SERVER = os.getenv('SERVER_ADDRESS')
-PORT = config['client_config']['SERVER_PORT']
+PORT = data['SERVER_PORT']
 ADDR = (SERVER, PORT)
-MSG_WAIT = (int(config['client_config']['TIME_LOWER']) + int(config['client_config']['TIME_UPPER'])) / 2
-
+MSG_WAIT = (int(data['TIME_LOWER']) + int(data['TIME_UPPER'])) / 2
 
 MSG_LENGTH = 64
 FORMAT = 'utf-8'
