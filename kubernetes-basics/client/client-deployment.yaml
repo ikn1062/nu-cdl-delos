@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-config-file
+data:
+  client.ini: |
+  [client_config]
+  SERVER_PORT = 5050
+  TIME_LOWER = 3
+  TIME_UPPER = 7
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+      - name: client
+        image: ikn1062/pyclient
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+        env:
+        - name: SERVER_ADD
+          value: client-server-service
+        volumeMounts:
+        - name: client-config
+          mountPath: app
+      volumes:
+        - name: client-config
+          configMap:
+            name: client-config-file
