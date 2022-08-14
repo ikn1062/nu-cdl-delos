@@ -1,11 +1,24 @@
 import socket
 import time
 import threading
+from configparser import ConfigParser
+import os
 
-PORT = 5051
+file_name = "client.ini"
+config = ConfigParser()
+config.read(file_name)
+
+"""
 SERVER = socket.gethostbyname(socket.gethostname())
+PORT = 5051
 ADDR = (SERVER, PORT)
 MSG_WAIT = (5 + 5)//2
+"""
+SERVER = os.getenv('SERVER_ADDRESS')
+PORT = config['client_config']['SERVER_PORT']
+ADDR = (SERVER, PORT)
+MSG_WAIT = (int(config['client_config']['TIME_LOWER']) + int(config['client_config']['TIME_UPPER'])) / 2
+
 
 MSG_LENGTH = 64
 FORMAT = 'utf-8'
