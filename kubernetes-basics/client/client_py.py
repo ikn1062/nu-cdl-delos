@@ -55,8 +55,8 @@ def main():
         try:
             # send(client, client_msg)
             if threading.activeCount() < 2:
-                thread_send = threading.Thread(target=send, args=(client, client_msg))
-                thread_server_reply = threading.Thread(target=server_reply, args=(client,))
+                thread_send = threading.Thread(target=send, args=(client, client_msg), daemon=True)
+                thread_server_reply = threading.Thread(target=server_reply, args=(client,), daemon=True)
                 thread_send.start()
                 thread_server_reply.start()
         except ConnectionResetError as e:
