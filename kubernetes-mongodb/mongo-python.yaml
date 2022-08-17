@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-server
+data:
+  dburl: mongodb-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-python
+spec:
+  selector:
+    matchLabels:
+      app: mongopy
+  template:
+    metadata:
+      labels:
+        app: mongopy
+    spec:
+      containers:
+      - name: mongopy
+        image: <Image>
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 8081
+        env:
+        - name: MONGO_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-login
+              key: mongo-root-username 
+        - name: MONGO_PASS
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-login
+              key: mongo-root-password  
+        - name: MONGO_SERVER
+          valueFrom:
+            configMapKeyRef:
+              name: mongodb-server
+              key: dburl
+
