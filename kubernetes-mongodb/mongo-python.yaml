@@ -4,7 +4,7 @@ metadata:
   name: mongodb-python-config
 data:
   dburl: mongodb-service
-  mport: 27017
+  mport: "27017"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -45,8 +45,8 @@ spec:
               name: mongodb-python-config
               key: dburl
         - name: MONGO_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: mongodb-python-config
-                key: mport
+          valueFrom:
+            configMapKeyRef:
+              name: mongodb-python-config
+              key: mport
 
