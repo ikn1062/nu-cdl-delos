@@ -1,7 +1,0 @@
-1. Create docker image
-2. minikube addons enable ingress
-3. kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.0/deploy/static/provider/cloud/deploy.yaml
-4. Create deployment, service, and ingress with minikube
-5. Add http endpoint name to /etc/hosts
-6. minikube tunnel
-7. Open in browser
