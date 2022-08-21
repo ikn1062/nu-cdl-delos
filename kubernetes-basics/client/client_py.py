@@ -20,6 +20,10 @@ DISCONNECT_MSG = "0"
 
 
 def connect():
+    """
+    Tries to connect to server socket
+    :return: client object, connected to server
+    """
     timer = 0
     not_connected = True
     client = None
@@ -39,6 +43,12 @@ def connect():
 
 
 def send(client, msg):
+    """
+    Sends message to server via client object
+    :param client: client object
+    :param msg: message to be sent
+    :return: None
+    """
     while True:
         time.sleep(MSG_WAIT)
         message = msg.encode(FORMAT)
@@ -46,6 +56,11 @@ def send(client, msg):
 
 
 def server_reply(client):
+    """
+    Receives messages from server - prints message
+    :param client: client socket object
+    :return: None
+    """
     while True:
         server_msg = ""
         amount_received = 0
@@ -60,7 +75,7 @@ def main():
         client = connect()
         client_msg = "Hello World!"
         try:
-            # send(client, client_msg)
+            # Create threads to asynchronously send and receive messages
             if threading.active_count() < 2:
                 thread_send = threading.Thread(target=send, args=(client, client_msg), daemon=True)
                 thread_server_reply = threading.Thread(target=server_reply, args=(client,), daemon=True)

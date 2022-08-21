@@ -7,12 +7,6 @@ file_name = "server.json"
 file_open = open('server.json')
 data = json.load(file_open)
 
-"""
-PORT = 5051
-SERVER = socket.gethostbyname(socket.gethostname())
-ADDR = (SERVER, PORT)
-MSG_WAIT = (1 + 1) // 2
-"""
 SERVER = '0.0.0.0'
 PORT = data['SERVER_PORT']
 ADDR = (SERVER, PORT)
@@ -30,6 +24,13 @@ server.bind(ADDR)
 
 
 def handle_client(connection, client_addr):
+    """
+    Looking for and setting up connection with client
+    - Receives messages when connected to client and prints them out
+    :param connection: Client connection
+    :param client_addr: Client address
+    :return: None
+    """
     print(f"[NEW CONNECTION] {client_addr} connected...")
     global connection_status
     connection_status = True
@@ -46,6 +47,11 @@ def handle_client(connection, client_addr):
 
 
 def send_return(connection):
+    """
+    Sends return message to the client
+    :param connection: Client connection object
+    :return: None
+    """
     return_msg = RETURN_MSG.encode(FORMAT)
     while True:
         time.sleep(MSG_WAIT)
@@ -54,13 +60,15 @@ def send_return(connection):
 
 
 def server_main():
+    # Listens on the service
     server.listen()
     global connection_status
     print(f"[LISTENING] Server is listening on {SERVER}")
     while True:
+        # Once a client is found, sets up a connection
         connection, client_addr = server.accept()
         try:
-            # handle_client(connection, client_addr)
+            # Create threads to asynchronously send and receive messages
             if threading.activeCount() < 2:
                 thread_handle_client = threading.Thread(target=handle_client, args=(connection, client_addr), daemon=True)
                 thread_send_return = threading.Thread(target=send_return, args=(connection,), daemon=True)
