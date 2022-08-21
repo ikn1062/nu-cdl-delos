@@ -37,11 +37,22 @@ def train_model():
 
 
 def rotate(image, label):
-        """Rotates images """
-        return tf.image.rot90(image, k=2), label
+    """
+    Rotate images
+    :param image: image tensor
+    :param label: label tensor
+    :return: image rotated 180 degrees
+    """
+    return tf.image.rot90(image, k=2), label
 
 
 def normalize_img(image, label):
+    """
+    Normalized image
+    :param image: image tensor
+    :param label: label tensor
+    :return: Normalized image
+    """
     return tf.cast(image, tf.float32) / 255., label
 
 
@@ -63,14 +74,24 @@ def make_model():
     return model
 
 
-def prepare_data(dataset, type="test", ds_info=None):
+def prepare_data(dataset, data_type="test", ds_info=None):
+    """
+    Prepares dataset for binary classification
+    :param dataset: mnist dataset (tf dataset object)
+    :param data_type: Type of data input
+    :param ds_info: dataset info object from tf.tfds
+    :return: Dataset for training and evaluation
+    """
+    # Makes labels binary
     dataset = dataset.map(lambda x, y: (x, tf.cast(y % 2, tf.float32)))
 
+    # Rotates dataset and adds it to the original dataset
     dataset_rotated = dataset.map(rotate)
     dataset = dataset.concatenate(dataset_rotated)
 
+    # Normalizes data and shuffles, uses caching and prefetch for performance
     dataset = dataset.map(normalize_img, num_parallel_calls=tf.data.AUTOTUNE)
-    if type == "train":
+    if data_type == "train":
         dataset.shuffle(ds_info.splits['train'].num_examples)
     dataset = dataset.batch(128)
     dataset = dataset.cache()
@@ -79,31 +100,42 @@ def prepare_data(dataset, type="test", ds_info=None):
 
 
 def evaluate_model(show_errors=True):
+    """
+    Loads and evaluates trained model
+    :param show_errors: Show plot of error images
+    :return: Model evaluation and plots images which resulted in errors
+    """
+    # Retrieves and prepares data
     (ds_train, ds_test), ds_info = tfds.load('mnist', split=['train', 'test'], shuffle_files=True, as_supervised=True,
                                              with_info=True, )
-
     ds_test = prepare_data(ds_test)
 
+    # Loads and evaluates model
     model = keras.models.load_model('mnist-model/')
     model.evaluate(ds_test, verbose=2)
 
     map_result = {1: "odd", 0: "even"}
 
     if show_errors:
+        # Gets the true and predicted values from test dataset
         y_true, y_pred = [], []
         images = []
         for image_batch, label_batch in ds_test:
             y_true.append(label_batch)
             y_pred.append((model.predict(image_batch) > 0.5).astype("float32"))
             images.append(image_batch)
+        images = tf.concat([item for item in images], axis=0)
         true_labels = tf.concat([item for item in y_true], axis=0)
         predicted_labels = tf.concat([item for item in y_pred], axis=0)
         predicted_labels = tf.reshape(predicted_labels, (20000,))
 
-        images = tf.concat([item for item in images], axis=0)
+        # Finds locations where true != predicted
         predicted_false = tf.where(true_labels != predicted_labels)
+
+        # Creates list of random indexes for images
         rand_idx = np.random.randint(0, len(predicted_false), 10)
 
+        # Plots images with labels
         f, ax = plt.subplots(1, 10, figsize=(50, 50))
         for ii, i in enumerate(rand_idx):
             idx = predicted_false[i]
