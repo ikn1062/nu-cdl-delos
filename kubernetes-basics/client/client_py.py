@@ -8,12 +8,6 @@ file_name = "client.json"
 file_open = open('client.json')
 data = json.load(file_open)
 
-"""
-SERVER = socket.gethostbyname(socket.gethostname())
-PORT = 5051
-ADDR = (SERVER, PORT)
-MSG_WAIT = (5 + 5)//2
-"""
 SERVER = os.getenv('SERVER_ADD')
 PORT = data['SERVER_PORT']
 ADDR = (SERVER, PORT)
