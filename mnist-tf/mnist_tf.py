@@ -10,6 +10,12 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
 def train_model():
+    """
+    Trains model to recognize whether digits are odd and even using mnist data
+    - creates model file
+    - prints training epochs and initial evaluation of model
+    :return: None
+    """
     # Loads MNIST data set
     (ds_train, ds_test), ds_info = tfds.load('mnist', split=['train', 'test'], shuffle_files=True, as_supervised=True,
                                              with_info=True, )
@@ -102,8 +108,9 @@ def prepare_data(dataset, data_type="test", ds_info=None):
 def evaluate_model(show_errors=True):
     """
     Loads and evaluates trained model
+    - Prints Model evaluation and plots images which resulted in errors
     :param show_errors: Show plot of error images
-    :return: Model evaluation and plots images which resulted in errors
+    :return: None
     """
     # Retrieves and prepares data
     (ds_train, ds_test), ds_info = tfds.load('mnist', split=['train', 'test'], shuffle_files=True, as_supervised=True,
@@ -144,6 +151,7 @@ def evaluate_model(show_errors=True):
             y_p = tf.gather(predicted_labels, idx).numpy()
             ax[ii].imshow(img, cmap='gray')
             ax[ii].set_title(f"predicted: {map_result[y_p[0]]}, true: {map_result[y_t[0]]}", fontsize=20)
+        plt.savefig('error_example.png')
         plt.show()
 
 
