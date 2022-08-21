@@ -151,7 +151,7 @@ def evaluate_model(show_errors=True):
             y_p = tf.gather(predicted_labels, idx).numpy()
             ax[ii].imshow(img, cmap='gray')
             ax[ii].set_title(f"predicted: {map_result[y_p[0]]}, true: {map_result[y_t[0]]}", fontsize=20)
-        plt.savefig('error_example.png')
+        # plt.savefig('error_example.png')
         plt.show()
 
 
