@@ -83,5 +83,6 @@ def server_main():
             continue
 
 
-print("[STARTING] server is starting...")
-server_main()
+if __name__ == "__main__":
+    print("[STARTING] server is starting...")
+    server_main()
