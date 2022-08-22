@@ -53,7 +53,7 @@ Do the same for `server-deployment.yaml` on line 28.
 You can edit the time lower and upper for client and server in the `client-deployment.yaml` and `server-deployment.yaml`,
 respectively. 
 
-Change the following on lines 9-10 of the files mentioned above:
+Change the following on lines 9-10 in the files mentioned above:
 ```
  "TIME_LOWER": 1,
  "TIME_UPPER": 3
