@@ -1,4 +1,4 @@
-# Helm Chart
+# Kubernetes Basics
 
 ## Important Files
 1. `client/` contains the necessary files for a client python docker image and pod deployment
