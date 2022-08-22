@@ -22,7 +22,7 @@ def train_model():
     print(ds_info)
 
     # Prepare the data sets for training
-    ds_train = prepare_data(ds_train, "train", ds_info)
+    ds_train = prepare_data(ds_train, "train", ds_info.splits['train'].num_examples)
     ds_test = prepare_data(ds_test)
 
     # Create the model using make_model()
@@ -80,12 +80,12 @@ def make_model():
     return model
 
 
-def prepare_data(dataset, data_type="test", ds_info=None):
+def prepare_data(dataset, data_type="test", shuffle=1000):
     """
     Prepares dataset for binary classification
     :param dataset: mnist dataset (tf dataset object)
     :param data_type: Type of data input
-    :param ds_info: dataset info object from tf.tfds
+    :param shuffle: Shuffle size of data
     :return: Dataset for training and evaluation
     """
     # Makes labels binary
@@ -98,7 +98,7 @@ def prepare_data(dataset, data_type="test", ds_info=None):
     # Normalizes data and shuffles, uses caching and prefetch for performance
     dataset = dataset.map(normalize_img, num_parallel_calls=tf.data.AUTOTUNE)
     if data_type == "train":
-        dataset.shuffle(ds_info.splits['train'].num_examples)
+        dataset.shuffle(shuffle)
     dataset = dataset.batch(128)
     dataset = dataset.cache()
     dataset = dataset.prefetch(tf.data.AUTOTUNE)
@@ -151,7 +151,7 @@ def evaluate_model(show_errors=True):
             y_p = tf.gather(predicted_labels, idx).numpy()
             ax[ii].imshow(img, cmap='gray')
             ax[ii].set_title(f"predicted: {map_result[y_p[0]]}, true: {map_result[y_t[0]]}", fontsize=20)
-        # plt.savefig('error_example.png')
+        # plt.savefig('error_examples.png')
         plt.show()
 
 
