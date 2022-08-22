@@ -59,4 +59,3 @@ The model will return with the evaluation data (example shown below)
 
 As well as an output showing examples of errors as a plot. 
 
-![Error Example Image ](error_example.png)
