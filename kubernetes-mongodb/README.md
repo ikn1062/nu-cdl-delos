@@ -1,4 +1,4 @@
-# Helm Chart
+# Kubernetes Mongo
 
 ## Important Files
 1. `mongooy` contains the python file to connect to the mongodb client and insert records

@@ -2,7 +2,7 @@
 
 ## Important Files
 1. `app/` contains the fast api python file that contains the  route “/initiate”
-2. `myfastapi/` contains all the deployment, service, and ingress files integrated as a helm chart
+2. `myfastapi/` contains all the deployment, service, and ingress files integrated as a helm chart. This also includes prometheus as a subchart.
 3. `Dockerfile` is used to build the image which is then deployed using the helm chart
    1. Gets requirements from `requirements.txt`
 4. `api-deployment.yaml` holds the deployment, service, and ingress used during debugging
